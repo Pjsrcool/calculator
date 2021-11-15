@@ -103,13 +103,7 @@ export default function calculate(obj, buttonName) {
   }
 
   if (buttonName === "=") {
-    if (obj.next && obj.operation) {
-      return {
-        total: operate(obj.total, obj.next, obj.operation),
-        next: null,
-        operation: null,
-      };
-    } else {
+    if (!obj.next || !obj.operation) {
       // '=' with no operation, nothing to do
       return {};
     }
@@ -143,7 +137,9 @@ export default function calculate(obj, buttonName) {
   }
 
   // User pressed an operation button and there is an existing operation
-  if (obj.operation) {
+  if (obj.operation || buttonName === "=") {
+    // Prevent operation if button is "="
+    buttonName = buttonName === "=" ? null : buttonName;
     // ISSUE #16 - Calculator makes the sum of the two previous numbers before multiplying
     // If there is a higher order value, perform calculation
     if (obj.higherOrder && obj.higherOrder.next) {
