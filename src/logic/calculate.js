@@ -79,6 +79,15 @@ export default function calculate(obj, buttonName) {
           .toString(),
       };
     }
+    // ISSUE 40 - Does not calculate the percentage after
+    // addition or subtraction or multiplication or division
+    if (obj.total) {
+      return {
+        total: Big(obj.total)
+          .div(Big("100"))
+          .toString(),
+      };
+    }
     return {};
   }
 
