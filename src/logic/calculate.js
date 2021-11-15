@@ -18,12 +18,24 @@ export default function calculate(obj, buttonName) {
       total: null,
       next: null,
       operation: null,
+      // clear high order values
+      higherOrder: {},
     };
   }
 
   if (isNumber(buttonName)) {
     if (buttonName === "0" && obj.next === "0") {
       return {};
+    }
+    // If there is a higher order operation
+    if (obj.higherOrder && obj.higherOrder.operation) {
+      return {
+        higherOrder: {
+          // set higher order number
+          next: buttonName,
+          operation: obj.higherOrder.operation,
+        },
+      };
     }
     // If there is an operation, update next
     if (obj.operation) {
@@ -111,11 +123,75 @@ export default function calculate(obj, buttonName) {
 
   // User pressed an operation button and there is an existing operation
   if (obj.operation) {
-    return {
-      total: operate(obj.total, obj.next, obj.operation),
-      next: null,
-      operation: buttonName,
-    };
+    // ISSUE #16 - Calculator makes the sum of the two previous numbers before multiplying
+    // If there is a higher order value, perform calculation
+    if (obj.higherOrder && obj.higherOrder.next) {
+      // calculate higher operation with next values
+      const higherOrderTotal = operate(
+        obj.next,
+        obj.higherOrder.next,
+        obj.higherOrder.operation,
+      );
+      if (isHigherOrderOperation(buttonName)) {
+        // Next is higher order operation
+        return {
+          // Don't calculate total yet
+          next: higherOrderTotal,
+          higherOrder: {
+            next: null,
+            // set higher order operation
+            operation: buttonName,
+          },
+        };
+      } else {
+        // Next is lower order operation
+        return {
+          // Calculate total
+          total: operate(obj.total, higherOrderTotal, obj.operation),
+          next: null,
+          // set lower order operation
+          operation: buttonName,
+          higherOrder: {
+            next: null,
+            operation: null,
+          },
+        };
+      }
+    }
+    // If operation is a higher order operation, perform calculation
+    if (isHigherOrderOperation(obj.operation)) {
+      return {
+        // perform total calculation
+        total: operate(obj.total, obj.next, obj.operation),
+        next: null,
+        // set operation
+        operation: buttonName,
+      };
+    }
+    // If next operation is a lower order operation
+    if (!isHigherOrderOperation(buttonName)) {
+      return {
+        // perform total calculation
+        total: operate(obj.total, obj.next, obj.operation),
+        next: null,
+        // set operation
+        operation: buttonName,
+        higherOrder: {
+          next: null,
+          operation: null,
+        },
+      };
+    }
+    // If next operation is a higher order operation
+    if (isHigherOrderOperation(buttonName)) {
+      return {
+        higherOrder: {
+          next: null,
+          // set operation
+          operation: buttonName,
+        },
+      };
+    }
   }
 
   // no operation yet, but the user typed one
@@ -131,4 +207,11 @@ export default function calculate(obj, buttonName) {
     next: null,
     operation: buttonName,
   };
+}
+
+// Did user press a higher order operation button
+function isHigherOrderOperation(operation) {
+  if (operation === "x" || operation === "÷") {
+    return true;
+  }
 }

@@ -9,6 +9,10 @@ export default class App extends React.Component {
     total: null,
     next: null,
     operation: null,
+    higherOrder: {
+      next: null,
+      operation: null,
+    },
   };
 
   handleClick = buttonName => {

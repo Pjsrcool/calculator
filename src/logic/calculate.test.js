@@ -87,17 +87,29 @@ describe("calculate", function() {
   test(["+", "2", "+"], {
     total: "2",
     operation: "+",
+    higherOrder: {
+      next: null,
+      operation: null,
+    },
   });
 
   test(["+", "2", "+", "+"], {
     total: "2",
     operation: "+",
+    higherOrder: {
+      next: null,
+      operation: null,
+    },
   });
 
   test(["+", "2", "+", "5"], {
     next: "5",
     total: "2",
     operation: "+",
+    higherOrder: {
+      next: null,
+      operation: null,
+    },
   });
 
   test(["+", "2", "5"], {
@@ -112,6 +124,10 @@ describe("calculate", function() {
 
   test(["+", "6", "+", "5", "="], {
     total: "11",
+    higherOrder: {
+      next: null,
+      operation: null,
+    },
   });
 
   test(["0", ".", "4"], {
@@ -133,8 +149,8 @@ describe("calculate", function() {
   });
 
   // should clear the operator when AC is pressed
-  test(["1", "+", "2", "AC"], {});
-  test(["+", "2", "AC"], {});
+  test(["1", "+", "2", "AC"], { higherOrder: {} });
+  test(["+", "2", "AC"], { higherOrder: {} });
 
   test(["4", "%"], {
     next: "0.04",
@@ -158,16 +174,17 @@ describe("calculate", function() {
   //Test that pressing the multiplication or division sign multiple times should not affect the current computation
   test(["2", "x", "x"], {
     total: "2",
-    operation: "x"
+    operation: "x",
   });
 
   test(["2", "÷", "÷"], {
     total: "2",
-    operation: "÷"
+    operation: "÷",
   });
 
   test(["2", "÷", "x", "+", "-", "x"], {
     total: "2",
-    operation: 'x'
+    operation: "-",
+    higherOrder: { next: null, operation: "x" },
   });
 });
