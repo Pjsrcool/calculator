@@ -24,6 +24,9 @@ export default function calculate(obj, buttonName) {
   }
 
   if (isNumber(buttonName)) {
+    // ISSUE #25 The leftmost zero in a number
+    buttonName = parseInt(buttonName, 10).toString();
+
     if (buttonName === "0" && obj.next === "0") {
       return {};
     }
