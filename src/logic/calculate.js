@@ -121,6 +121,15 @@ export default function calculate(obj, buttonName) {
   //   return {};
   // }
 
+  // no operation yet, but the user typed one
+
+  // The user hasn't typed a number yet, just save the operation
+  // ISSUE #17 - Error while double click in divide button (moved up check)
+  // ISSUE #39 - Error while double clicking on the multiply button after entering only one number (moved up check)
+  if (!obj.next) {
+    return { operation: buttonName };
+  }
+
   // User pressed an operation button and there is an existing operation
   if (obj.operation) {
     // ISSUE #16 - Calculator makes the sum of the two previous numbers before multiplying
@@ -192,13 +201,6 @@ export default function calculate(obj, buttonName) {
         },
       };
     }
-  }
-
-  // no operation yet, but the user typed one
-
-  // The user hasn't typed a number yet, just save the operation
-  if (!obj.next) {
-    return { operation: buttonName };
   }
 
   // save the operation and shift 'next' into 'total'

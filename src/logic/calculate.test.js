@@ -184,7 +184,6 @@ describe("calculate", function() {
 
   test(["2", "÷", "x", "+", "-", "x"], {
     total: "2",
-    operation: "-",
-    higherOrder: { next: null, operation: "x" },
+    operation: "x",
   });
 });
