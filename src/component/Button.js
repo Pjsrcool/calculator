@@ -17,6 +17,7 @@ export default class Button extends React.Component {
   render() {
     const className = [
       "component-button",
+      this.props.functions ? "functions" : "",
       this.props.orange ? "orange" : "",
       this.props.wide ? "wide" : "",
     ];
