@@ -4,12 +4,17 @@
   "license": "MIT",
   "homepage": "/",
   "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.5",
+    "@babel/node": "^7.18.5",
+    "@babel/plugin-syntax-jsx": "^7.17.12",
+    "@babel/plugin-transform-react-jsx": "^7.17.12",
+    "@babel/preset-env": "^7.18.2",
     "chai": "^4.2.0",
     "gh-pages": "^2.0.1",
     "prettier": "^1.17.1"
   },
   "dependencies": {
-    "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "babel-jest": "^27.4.2",
@@ -65,7 +70,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "es5": "babel src -d src"
   },
   "prettier": {
     "trailingComma": "all"
@@ -131,11 +137,6 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   },
   "eslintConfig": {
     "extends": "react-app"
